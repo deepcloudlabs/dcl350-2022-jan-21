@@ -2,6 +2,7 @@ package com.example.hr.domain;
 
 public class Exercise {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// -Djava.lang.Integer.IntegerCache.high=4096
 		Integer x = Integer.valueOf(108);
