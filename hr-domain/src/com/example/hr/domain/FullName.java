@@ -3,7 +3,7 @@ package com.example.hr.domain;
 import java.util.Objects;
 
 // Value Object
-public class FullName {
+public final class FullName {
 	private final String first;
 	private final String last;
 

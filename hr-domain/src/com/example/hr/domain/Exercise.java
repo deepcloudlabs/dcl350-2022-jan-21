@@ -10,6 +10,7 @@ public class Exercise {
 		Integer v = 5049;
 		System.err.println("x==y: "+(x==y));
 		System.err.println("u==v: "+(u==v));
+		var currency = FiatCurrency.valueOf("TL");
 	}
 
 }
