@@ -2,14 +2,28 @@ package com.example.hr.dto.request;
 
 import java.util.List;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
+import com.example.validation.Iban;
+import com.example.validation.TcKimlikNo;
+
 public class HireEmployeeRequest {
+	@TcKimlikNo
 	private String identity;
+	@NotBlank
 	private String firstName;
+	@NotBlank
 	private String lastName;
+	@Iban
 	private String iban;
+	@Min(4250)
 	private double salary;
 	private List<String> departments;
+	@NotBlank
 	private String jobStyle;
+	@Max(2004)
 	private int birthYear;
 	private String photo;
 
