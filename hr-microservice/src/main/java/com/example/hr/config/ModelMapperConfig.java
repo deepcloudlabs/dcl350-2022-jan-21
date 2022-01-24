@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.hr.domain.Employee;
+import com.example.hr.dto.request.HireEmployeeRequest;
+import com.example.hr.dto.response.FireEmployeeResponse;
 import com.example.hr.dto.response.GetEmployeeResponse;
 
 @Configuration
@@ -27,12 +29,46 @@ public class ModelMapperConfig {
 	   response.setBirthYear(employee.getBirthYear().getValue());
 	   return response;
 	};
+	private static final Converter<Employee, FireEmployeeResponse>
+	EMPLOYEE_TO_FIRE_EMPLOYEE_RESPONSE_CONVERTER = 
+	(context) -> {
+		var employee = context.getSource();
+		var fullname = employee.getFullname();
+		var response = new FireEmployeeResponse();
+		response.setIdentity(employee.getTcKimlikNo().getValue());
+		response.setFullname(String.format("%s %s", 
+				fullname.getFirst(),fullname.getLast()));
+		response.setIban(employee.getIban().getValue());
+		response.setSalary(employee.getSalary().getValue());
+		response.setJobStyle(employee.getJobStyle().name());
+		response.setBirthYear(employee.getBirthYear().getValue());
+		return response;
+	};
+	private static final Converter<HireEmployeeRequest, Employee>
+	HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER = 
+	(context) -> {
+		var request = context.getSource();
+		return new Employee.Builder()
+				           .tcKimlikNo(request.getIdentity())
+				           .fullname(request.getFirstName(), request.getLastName())
+				           .iban(request.getIban())
+				           .salary(request.getSalary())
+				           .birthYear(request.getBirthYear())
+				           .photo(request.getPhoto())
+				           .jobStyle(request.getJobStyle())
+				           .departments(request.getDepartments().toArray(new String[0]))
+				           .build();
+	};
 	
 	@Bean
 	public ModelMapper modelMapper() {
 		var mapper = new ModelMapper();
 		mapper.addConverter(EMPLOYEE_TO_GET_EMPLOYEE_RESPONSE_CONVERTER, 
 				Employee.class, GetEmployeeResponse.class);
+		mapper.addConverter(EMPLOYEE_TO_FIRE_EMPLOYEE_RESPONSE_CONVERTER, 
+				Employee.class, FireEmployeeResponse.class);
+		mapper.addConverter(HIRE_EMPLOYEE_REQUEST_TO_EMPLOYEE_CONVERTER, 
+				HireEmployeeRequest.class, Employee.class);
 		return mapper;
 	}
 }
