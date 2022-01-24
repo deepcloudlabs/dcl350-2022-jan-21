@@ -3,6 +3,7 @@ package com.example.hr.application.business;
 import java.util.Optional;
 
 import com.example.hr.application.HrApplication;
+import com.example.hr.application.business.events.EmployeeFiredEvent;
 import com.example.hr.application.business.events.EmployeeHiredEvent;
 import com.example.hr.application.business.exception.EmployeeNotFoundException;
 import com.example.hr.application.business.exception.ExistingEmployeeException;
@@ -35,7 +36,12 @@ public class StandardHrApplication implements HrApplication {
 	public Optional<Employee> fireEmployee(TcKimlikNo kimlik) {
 		if (!employeeRepository.existsByKimlikNo(kimlik))
 			throw new EmployeeNotFoundException("Employee does not exist", kimlik.getValue());
-		return employeeRepository.remove(kimlik);
+		
+		Optional<Employee> removedEmployee = employeeRepository.remove(kimlik);
+		removedEmployee.ifPresent( 
+		 employee -> eventPublisher.publishEvent(new EmployeeFiredEvent(employee))
+		);
+		return removedEmployee;
 	}
 
 	@Override
