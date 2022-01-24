@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.example.hr.application.HrApplication;
+import com.example.hr.domain.Employee;
 import com.example.hr.domain.TcKimlikNo;
 import com.example.hr.dto.request.HireEmployeeRequest;
 import com.example.hr.dto.response.FireEmployeeResponse;
@@ -30,14 +31,15 @@ public class StandardHrService implements HrService {
 
 	@Override
     public HireEmployeeResponse hireEmployee(HireEmployeeRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		var employee = modelMapper.map(request, Employee.class);
+		var hiredEmployee = hrApplication.hireEmployee(employee);
+		return modelMapper.map(hiredEmployee, HireEmployeeResponse.class);
 	}
 
 	@Override
 	public FireEmployeeResponse fireEmployeeByIdentity(String kimlikNo) {
-		// TODO Auto-generated method stub
-		return null;
+		var employee =	hrApplication.fireEmployee(TcKimlikNo.valueOf(kimlikNo));
+		return modelMapper.map(employee, FireEmployeeResponse.class);
 	}
 
 }
