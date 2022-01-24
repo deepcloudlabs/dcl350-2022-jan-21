@@ -48,7 +48,7 @@ public class Employee {
 		}
 
 		public Builder salary(double value) {
-			return salary(value);
+			return salary(value,FiatCurrency.TL);
 		}
 
 		public Builder birthYear(int value) {
