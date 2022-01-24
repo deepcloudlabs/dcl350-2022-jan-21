@@ -1,11 +1,7 @@
 package com.example.hr.service.business;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.hr.application.HrApplication;
 import com.example.hr.domain.TcKimlikNo;
@@ -27,15 +23,12 @@ public class StandardHrService implements HrService {
 	}
 
 	@Override
-	@Cacheable
 	public GetEmployeeResponse findEmployeeByIdentity(String kimlikNo) {
 		var employee = hrApplication.findEmployeeByKimlikNo(TcKimlikNo.valueOf(kimlikNo));
 		return modelMapper.map(employee, GetEmployeeResponse.class);
 	}
 
 	@Override
-	@Transactional
-	@RolesAllowed("admin")
     public HireEmployeeResponse hireEmployee(HireEmployeeRequest request) {
 		// TODO Auto-generated method stub
 		return null;
