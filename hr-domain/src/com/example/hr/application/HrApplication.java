@@ -7,6 +7,6 @@ import com.example.hr.domain.TcKimlikNo;
 
 public interface HrApplication {
 	Employee hireEmployee(Employee employee);
-	Optional<Employee> fireEmployee(TcKimlikNo kimlik);
+	Employee fireEmployee(TcKimlikNo kimlik);
 	Optional<Employee> findEmployeeByKimlikNo(TcKimlikNo kimlik);
 }

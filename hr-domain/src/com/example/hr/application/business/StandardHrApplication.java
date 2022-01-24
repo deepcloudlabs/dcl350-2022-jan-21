@@ -33,15 +33,12 @@ public class StandardHrApplication implements HrApplication {
 	}
 
 	@Override
-	public Optional<Employee> fireEmployee(TcKimlikNo kimlik) {
-		if (!employeeRepository.existsByKimlikNo(kimlik))
-			throw new EmployeeNotFoundException("Employee does not exist", kimlik.getValue());
-		
+	public Employee fireEmployee(TcKimlikNo kimlik) {
 		Optional<Employee> removedEmployee = employeeRepository.remove(kimlik);
-		removedEmployee.ifPresent( 
-		 employee -> eventPublisher.publishEvent(new EmployeeFiredEvent(employee))
-		);
-		return removedEmployee;
+        var employee = removedEmployee.orElseThrow(() -> new EmployeeNotFoundException(
+        		"Employee does not exist", kimlik.getValue()));
+		eventPublisher.publishEvent(new EmployeeFiredEvent(employee));
+		return employee;
 	}
 
 	@Override
