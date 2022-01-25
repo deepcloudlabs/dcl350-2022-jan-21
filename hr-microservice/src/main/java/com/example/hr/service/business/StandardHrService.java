@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.example.hr.application.HrApplication;
+import com.example.hr.application.business.exception.EmployeeNotFoundException;
 import com.example.hr.domain.Employee;
 import com.example.hr.domain.TcKimlikNo;
 import com.example.hr.dto.request.HireEmployeeRequest;
@@ -26,7 +27,9 @@ public class StandardHrService implements HrService {
 	@Override
 	public GetEmployeeResponse findEmployeeByIdentity(String kimlikNo) {
 		var employee = hrApplication.findEmployeeByKimlikNo(TcKimlikNo.valueOf(kimlikNo));
-		return modelMapper.map(employee, GetEmployeeResponse.class);
+		if (employee.isEmpty())
+			throw new EmployeeNotFoundException("Cannot find employee", kimlikNo);
+		return modelMapper.map(employee.get(), GetEmployeeResponse.class);
 	}
 
 	@Override

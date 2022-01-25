@@ -30,6 +30,7 @@ public class ModelMapperConfig {
 	   response.setJobStyle(employee.getJobStyle());
 	   response.setDepartments(employee.getDepartments());
 	   response.setBirthYear(employee.getBirthYear().getValue());
+	   System.err.println("EMPLOYEE_TO_GET_EMPLOYEE_RESPONSE_CONVERTER: "+response);
 	   return response;
 	};
 	private static final Converter<Employee, FireEmployeeResponse>
@@ -87,7 +88,7 @@ public class ModelMapperConfig {
 				.iban(document.getIban())
 				.salary(document.getSalary())
 				.birthYear(document.getBirthYear())
-				.photo(document.getPhoto())
+				.photo(document.getPhoto().getBytes())
 				.jobStyle(document.getJobStyle().name())
 				.departments(document.getDepartments().toArray(new String[0]))
 				.build();
