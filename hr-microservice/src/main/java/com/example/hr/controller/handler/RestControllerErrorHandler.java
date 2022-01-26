@@ -14,6 +14,8 @@ import com.example.hr.application.business.exception.EmployeeNotFoundException;
 import com.example.hr.application.business.exception.ExistingEmployeeException;
 import com.example.hr.dto.error.ErrorResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 @RestControllerAdvice
 public class RestControllerErrorHandler {
 	@ExceptionHandler(EmployeeNotFoundException.class)
@@ -31,8 +33,13 @@ public class RestControllerErrorHandler {
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(HttpStatus.BAD_GATEWAY)
 	public ErrorResponse handleRuntimeException(RuntimeException e) {
-		e.printStackTrace();
 		return new ErrorResponse("Application", e.getMessage());
+	}
+	
+	@ExceptionHandler(ExpiredJwtException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+		return new ErrorResponse("Security", e.getMessage());
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)

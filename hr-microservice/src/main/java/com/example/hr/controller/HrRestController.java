@@ -18,11 +18,15 @@ import com.example.hr.dto.response.HireEmployeeResponse;
 import com.example.hr.service.HrService;
 import com.example.validation.TcKimlikNo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestScope
 @RequestMapping("employees")
 @CrossOrigin
 @Validated
+@Api( tags = "Employees")
 public class HrRestController {
 
 	private HrService hrService;
@@ -32,6 +36,7 @@ public class HrRestController {
 	}
 
 	@GetMapping("{kimlikNo}")
+	@ApiOperation(value = "This method is used to get the employee for the given {kimlikNo}")
 	public GetEmployeeResponse getEmployeeByIdentity(
 			@PathVariable @TcKimlikNo String kimlikNo) {
 		return hrService.findEmployeeByIdentity(kimlikNo);
