@@ -23,8 +23,8 @@ public class LotteryConsumerService {
 		this.instances = discoveryClient.getInstances("lottery");
 		instances.forEach(System.err::println);
 	}
-	
-	@Scheduled(fixedRate = 3_000)
+
+	//@Scheduled(fixedRate = 3_000)
 	public void callLotteryService() {
 		var rt = new RestTemplate();
 		// round-robin -> client-side load balancing strategy

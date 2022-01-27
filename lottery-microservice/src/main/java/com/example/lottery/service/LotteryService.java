@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 public class LotteryService {
 	@Value("${lottery.max}") private int max;
 	@Value("${lottery.size}") private int size;
+	@Value("${server.port}") private int port;
 	
 	public List<List<Integer>> draw(int column){
+		System.err.println("Lottery service @ "+port+" is serving...");
 	   return IntStream.range(0, column)
 			           .mapToObj(i -> getLotteryNumbers())
 			           .toList();
