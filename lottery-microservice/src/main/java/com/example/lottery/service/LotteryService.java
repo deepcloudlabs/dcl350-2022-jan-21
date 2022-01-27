@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 @Service
+@RefreshScope
 public class LotteryService {
-
+	@Value("${lottery.max}") private int max;
+	@Value("${lottery.size}") private int size;
+	
 	public List<List<Integer>> draw(int column){
 	   return IntStream.range(0, column)
 			           .mapToObj(i -> getLotteryNumbers())
@@ -17,9 +22,9 @@ public class LotteryService {
 	
 	public List<Integer> getLotteryNumbers(){
 		return ThreadLocalRandom.current()
-				                .ints(1,60)
+				                .ints(1,max)
 				                .distinct()
-				                .limit(6)
+				                .limit(size)
 				                .sorted()
 				                .boxed()
 				                .toList();
