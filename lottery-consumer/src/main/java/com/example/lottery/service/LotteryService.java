@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import io.github.resilience4j.retry.annotation.Retry;
 
 @FeignClient(name = "lottery")
-@RequestMapping("/lottery/api/v1")
 public interface LotteryService {
-	@GetMapping("/numbers")
+	@GetMapping("/lottery/api/v1/numbers")
 	@Retry(name="lottery",fallbackMethod = "getNumbersFallback")
 	List<List<Integer>> getNumbers(@RequestParam int column);
 	
