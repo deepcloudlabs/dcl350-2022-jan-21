@@ -21,10 +21,11 @@ public class ReactiveCustomerService {
 		return customerRepository.findById(identity)
 				                 .map( cust -> modelMapper.map(cust,CustomerResponse.class));
 	}
-
+	// 1. Async, 2. Functional Programming, 3. Stream Processing, 4. Observer Pattern
 	public Flux<CustomerResponse> findAllByPage(int page, int size) {
 		return customerRepository.findAll(PageRequest.of(page, size))
 				.map(cust -> modelMapper.map(cust,CustomerResponse.class));
+				
 	}
 
 	public Mono<CustomerResponse> acquireCustomer(AcquireCustomerRequest request) {
