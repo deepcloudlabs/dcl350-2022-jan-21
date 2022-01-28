@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.crm.document.CustomerDocument;
 import com.example.crm.dto.request.AcquireCustomerRequest;
 import com.example.crm.dto.response.CustomerResponse;
 import com.example.crm.repository.CustomerRepository;
@@ -27,12 +28,13 @@ public class ReactiveCustomerService {
 	}
 
 	public Mono<CustomerResponse> acquireCustomer(AcquireCustomerRequest request) {
-		return null;
+		return customerRepository.insert(modelMapper.map(request, CustomerDocument.class))
+				                 .map(cust -> modelMapper.map(cust, CustomerResponse.class));
 	}
 
 	public Mono<CustomerResponse> releaseCustomer(String identity) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepository.deleteById(identity)
+				                 .map(cust -> modelMapper.map(cust, CustomerResponse.class));
 	}
 
 }
