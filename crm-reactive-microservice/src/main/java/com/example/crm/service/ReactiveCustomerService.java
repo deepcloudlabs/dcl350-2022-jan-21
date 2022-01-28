@@ -1,22 +1,29 @@
 package com.example.crm.service;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.crm.dto.request.AcquireCustomerRequest;
 import com.example.crm.dto.response.CustomerResponse;
+import com.example.crm.repository.CustomerRepository;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 public class ReactiveCustomerService {
-
+	@Autowired private CustomerRepository customerRepository;
+	@Autowired ModelMapper modelMapper;
 	public Mono<CustomerResponse> findById(String identity) {
-		return null;
+		return customerRepository.findById(identity)
+				                 .map( cust -> modelMapper.map(cust,CustomerResponse.class));
 	}
 
 	public Flux<CustomerResponse> findAllByPage(int page, int size) {
-		return null;
+		return customerRepository.findAll(PageRequest.of(page, size))
+				.map(cust -> modelMapper.map(cust,CustomerResponse.class));
 	}
 
 	public Mono<CustomerResponse> acquireCustomer(AcquireCustomerRequest request) {

@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("customers")
 public class CrmReactiveController {
 	@Autowired
-	ReactiveCustomerService reactiveCustomerService;
+	private ReactiveCustomerService reactiveCustomerService;
 
 	@GetMapping("{identity}")
 	public Mono<CustomerResponse> findCustomerByIdentity(@PathVariable String identity) {
