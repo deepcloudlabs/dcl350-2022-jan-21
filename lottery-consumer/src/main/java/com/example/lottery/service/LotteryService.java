@@ -4,21 +4,18 @@ import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @FeignClient(name = "lottery")
 public interface LotteryService {
 	@GetMapping("/lottery/api/v1/numbers")
 	@Retry(name="lottery",fallbackMethod = "getNumbersFallback")
 	@RateLimiter(name="lottery",fallbackMethod = "getNumbersFallback")
-//	@TimeLimiter(name="lottery",fallbackMethod = "getNumbersFallback")
 	@CircuitBreaker(name="lottery",fallbackMethod = "getNumbersFallback")
 	@Bulkhead(name="lottery",fallbackMethod = "getNumbersFallback")
 	List<List<Integer>> getNumbers(@RequestParam int column);

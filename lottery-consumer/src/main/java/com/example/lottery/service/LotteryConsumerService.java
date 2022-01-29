@@ -24,7 +24,7 @@ public class LotteryConsumerService {
 		instances.forEach(System.err::println);
 	}
 
-	//@Scheduled(fixedRate = 3_000)
+	@Scheduled(fixedRate = 3_000)
 	public void callLotteryService() {
 		var rt = new RestTemplate();
 		// round-robin -> client-side load balancing strategy
@@ -34,6 +34,6 @@ public class LotteryConsumerService {
 				"http://%s:%d/lottery/api/v1/numbers?column=2",
 				server.getHost(),server.getPort());
 		var response = rt.getForEntity(url, String.class);
-		System.out.println(response.getBody());
+		System.out.println("LotteryConsumerService: "+response.getBody());
 	}
 }
